@@ -5,14 +5,17 @@ import {
   View,
   ImageBackground,
   TouchableOpacity,
-  Alert,
   Modal,
+  Platform,
 } from 'react-native';
 import Square from './Square';
 
 const GameBoard = (props) => {
-  const time = 10;
-  const [timeLeft, setTimeLeft] = useState(time);
+  const startTime = 30;
+  const [timeLeft, setTimeLeft] = useState(startTime);
+  const [count, setCount] = useState(0);
+  const [timeLeftStr, setTimeLeftStr] = useState('10');
+  const [showTimeLeft, setShowTimeLeft] = useState(true);
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isGamePaused, setIsGamePaused] = useState(false);
@@ -23,15 +26,21 @@ const GameBoard = (props) => {
     if (!isGamePaused) {
       if (timeLeft > 0) {
         const timerId = setInterval(() => {
-          //happens every 1 sec/1000ms
-          setTimeLeft(timeLeft - 1);
-        }, 1000);
+          if (count % 5 === 0) {
+            //happens every 1 sec/1000ms
+            setTimeLeft(timeLeft - 1);
+          }
+          setCount((prevCount) => prevCount + 1);
+        }, 200);
+        if (timeLeft < 5) {
+          setShowTimeLeft((showTimeLeft) => !showTimeLeft);
+        }
         return () => clearInterval(timerId);
       } else if (timeLeft === 0) {
         setIsGameOver(true);
       }
     }
-  }, [timeLeft, isGamePaused, isGameOver]);
+  }, [timeLeft, isGamePaused, isGameOver, count]);
 
   const squareArray = Array(12);
   for (let i = 0; i < squareArray.length; i++) {
@@ -57,7 +66,7 @@ const GameBoard = (props) => {
             <Text style={styles.paused}>GAME</Text>
             <Text style={styles.paused}>PAUSED</Text>
             <TouchableOpacity
-              style={[styles.pauseButton, {backgroundColor: 'green'}]}
+              style={[styles.button, {backgroundColor: 'green'}]}
               onPress={() => {
                 console.log('wtf');
                 setIsGamePaused(false);
@@ -80,11 +89,11 @@ const GameBoard = (props) => {
             <Text style={styles.paused}>GAME</Text>
             <Text style={styles.paused}>OVER</Text>
             <TouchableOpacity
-              style={[styles.pauseButton, {backgroundColor: 'green'}]}
+              style={[styles.button, {backgroundColor: 'green'}]}
               onPress={() => {
                 console.log('Game Over Pressed');
                 setIsGameOver(false);
-                setTimeLeft(10);
+                setTimeLeft(startTime);
                 //setIsModalVisible(false);
               }}
             >
@@ -94,13 +103,13 @@ const GameBoard = (props) => {
         </View>
       </Modal>
       <ImageBackground
-        style={styles.container}
+        style={Platform.OS === 'web' ? styles.containerWeb : styles.container}
         source={require('../assets/background.png')}
       >
         <View style={styles.buttonBox}>
           <TouchableOpacity
             style={[
-              styles.pauseButton,
+              styles.button,
               isGamePaused
                 ? {backgroundColor: '#5fb8e0'}
                 : {backgroundColor: 'blue'},
@@ -122,17 +131,60 @@ const GameBoard = (props) => {
           </TouchableOpacity>
         </View>
         {/* //END ButtonBox  */}
-
         <Text style={styles.header}>Whack-a-mole</Text>
-        <Text style={styles.score}>
-          TIME: {timeLeft} {'  '} SCORE: {score}
-        </Text>
-        <View style={[styles.game]}>
+        <View style={styles.timeScore}>
+          <View
+            style={{
+              //backgroundColor: 'yellow',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.score}>TIME:</Text>
+          </View>
+          <View
+            style={[
+              {
+                //backgroundColor: 'blue',
+                width: 55,
+              },
+              Platform.OS === 'web' && {alignItems: 'center'},
+            ]}
+          >
+            <Text
+              style={[styles.score, {display: showTimeLeft ? 'flex' : 'none'}]}
+            >
+              {' '}
+              {timeLeft}
+            </Text>
+          </View>
+          <View
+            style={{
+              //backgroundColor: 'red',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.score}>{'  '}SCORE:</Text>
+          </View>
+          <View
+            style={[
+              {
+                //backgroundColor: 'blue',
+                minWidth: 60,
+              },
+              Platform.OS === 'web' && {alignItems: 'center'},
+            ]}
+          >
+            <Text style={styles.score}> {score}</Text>
+          </View>
+        </View>
+
+        {/* MOLES */}
+        <View style={Platform.OS === 'web' ? styles.gameWeb : styles.game}>
           {squareArray.map((square) => (
             <Square
               key={square}
               id={square}
-              time={time}
+              time={startTime}
               isGameOver={isGameOver}
               setIsGameOver={setIsGameOver}
               isGamePaused={isGamePaused}
@@ -165,7 +217,6 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignSelf: 'center',
-
     marginTop: 280,
     position: 'absolute',
   },
@@ -190,7 +241,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     //alignItems: 'center',
     alignSelf: 'center',
-
     //marginTop: 280,
     //position: 'absolute',
   },
@@ -228,6 +278,17 @@ const styles = StyleSheet.create({
   score: {
     fontWeight: 'bold',
     color: 'red',
+    fontSize: 23,
+    marginBottom: 5,
+    marginTop: 5,
+    textShadowColor: 'black',
+    textShadowOffset: {width: 0, height: 3},
+    textShadowRadius: 2,
+  },
+  timeScore: {
+    flexDirection: 'row',
+    fontWeight: 'bold',
+    color: 'red',
     fontSize: 30,
     marginBottom: 5,
     marginTop: 5,
@@ -246,26 +307,15 @@ const styles = StyleSheet.create({
     height: 150,
     backgroundColor: 'white',
     justifyContent: 'center',
-    //alignItems: 'center',
-    //alignSelf: 'center',
     margin: 'auto',
     borderRadius: 10,
     shadowColor: 'black',
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.3,
     shadowRadius: 1,
-    //position: 'absolute',
-    top: -170,
+    top: -100,
   },
   continueButton: {
-    //zIndex: 99,
-    //flexDirection: 'row',
-    //margin: 10,
-    //width: 120,
-    //alignSelf: 'center',
-    //position: 'absolute',
-    //top: 40,
-    //borderRadius: 10,
     height: 35,
     minWidth: 70,
     borderRadius: 10,
@@ -276,12 +326,11 @@ const styles = StyleSheet.create({
   buttonBox: {
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
-    //alignSelf: 'center',
     position: 'absolute',
     top: 30,
     left: 220,
   },
-  pauseButton: {
+  button: {
     borderRadius: 10,
     height: 35,
     minWidth: 70,
@@ -291,10 +340,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
-    //alignItems: 'center',
-    //justifyContent: 'center',
     textAlign: 'center',
-    //verticalAlign: 'center',
     marginTop: 'auto',
     marginBottom: 'auto',
   },

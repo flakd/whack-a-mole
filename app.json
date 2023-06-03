@@ -11,9 +11,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.flakd.whackamole"
     },
     "android": {
       "adaptiveIcon": {
@@ -23,6 +26,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "97ccd6f1-7aca-49e2-a5b3-324f972c5d95"
+      }
     }
   }
 }

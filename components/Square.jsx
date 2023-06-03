@@ -1,11 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
+import ReactDOM from 'react-dom';
+
 import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
+import styles from '../styles';
+import useInterval from '../useInterval';
 
 const Square = (props) => {
   const [moleActive, setMoleActive] = useState(false);
-  //const [isGameOver, setIsGameOver] = useState(false);
-
-  const randomTime = Math.random() * 20000;
 
   const randomIntFromInterval = (min, max) => {
     // min and max included
@@ -17,31 +18,37 @@ const Square = (props) => {
   let timerId = null;
 
   useEffect(() => {
-    if (!props.isGamePaused) {
-      timerId = setInterval(() => {
-        setMoleActive(true);
-        setTimeout(() => {
-          setMoleActive(false);
-        }, 800);
-      }, rndInt);
-      if (props.isGameOver) endGame();
+    if (props.isRoundOver) {
+      console.log('round over');
+      endRound();
+      return;
+    }
+    if (!props.isGamePaused && !props.isRoundOver) {
       //this should in 60 secs from GameBoard.jsx
       //setTimeout(endGame, props.time * 1000);
+      timerId = setInterval(() => {
+        setMoleActive(true);
+        console.log('about to play popOut sound');
+        //props.playSound('popOut');
+
+        setTimeout(() => {
+          setMoleActive(false);
+        }, props.settings.moleActiveTime);
+      }, rndInt);
     } else {
       return;
     }
-  }, [props.isGamePaused, props.isGameOver]);
+  }, [props.isGamePaused, props.isRoundOver]);
 
-  const endGame = () => {
+  const endRound = () => {
     clearInterval(timerId);
     setMoleActive(false);
-    //props.setIsGameOver(true);
-    //setIsGameOver(true);
   };
 
   const onPressMole = () => {
     console.log('moleActive: ', moleActive);
     if (moleActive) {
+      props.playSound('whack');
       props.addToScore();
       setMoleActive(false);
     }
@@ -54,7 +61,7 @@ const Square = (props) => {
     >
       <Image
         source={
-          moleActive && !props.isGameOver
+          moleActive && !props.isRoundOver
             ? require('../assets/mole.png')
             : require('../assets/hole.png')
         }
@@ -64,29 +71,4 @@ const Square = (props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  hole: {
-    flex: 1,
-    width: 80,
-    height: 80,
-    margin: 10,
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'center',
-    shadowRadius: 3,
-    shadowColor: 'black',
-    shadowOpacity: 0.5,
-    shadowOffset: {width: 0, height: 1},
-  },
-  mole: {
-    flex: 1,
-    width: 80,
-    height: 80,
-    margin: 10,
-    shadowRadius: 3,
-    shadowColor: 'black',
-    shadowOpacity: 0.5,
-    shadowOffset: {width: 0, height: 1},
-  },
-});
 export default Square;

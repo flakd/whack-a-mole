@@ -4,30 +4,30 @@ import styles from '../styles';
 
 const ButtonBox = (props) => {
   return (
-    <View style={styles.buttonBox}>
-      <TouchableOpacity
+    //<View style={styles.buttonBox}>
+    <TouchableOpacity
+      style={[
+        styles.button,
+        props.isGamePaused
+          ? {backgroundColor: '#5fb8e0'}
+          : {backgroundColor: 'blue'},
+      ]}
+      disabled={props.isGamePaused}
+      onPress={() => {
+        props.setIsGamePaused(true);
+        props.setIsModalVisible(true);
+      }}
+    >
+      <Text
         style={[
-          styles.button,
-          props.isGamePaused
-            ? {backgroundColor: '#5fb8e0'}
-            : {backgroundColor: 'blue'},
+          styles.buttonText,
+          props.isGamePaused ? {color: '#92e8e0'} : {color: 'white'},
         ]}
-        disabled={props.isGamePaused}
-        onPress={() => {
-          props.setIsGamePaused(true);
-          props.setIsModalVisible(true);
-        }}
       >
-        <Text
-          style={[
-            styles.buttonText,
-            props.isGamePaused ? {color: '#92e8e0'} : {color: 'white'},
-          ]}
-        >
-          PAUSE
-        </Text>
-      </TouchableOpacity>
-    </View>
+        PAUSE
+      </Text>
+    </TouchableOpacity>
+    //</View>
   );
 };
 

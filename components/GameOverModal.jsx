@@ -19,7 +19,8 @@ const GameOverModal = (props) => {
             onPress={() => {
               console.log('Game Over Pressed');
               props.setIsGameOver(false);
-              props.setTimeLeft(props.startTime);
+              //props.setTimeLeft(props.startTime);
+              props.setRoundNum(1);
             }}
           >
             <Text style={styles.buttonText}>START</Text>

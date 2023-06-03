@@ -14,54 +14,113 @@ const MySounds = {
   popOut: require('./assets/sounds/popOut.mp3'),
   whack: require('./assets/sounds/whack.mp3'),
 };
-const MySettings = {
-  1: {
-    startTime: 15,
+const MySettings = [
+  {
+    key: 1,
+    roundName: 'Level 1',
+    startTime: 5,
     moleActiveTime: 1200,
     numMoles: 9,
     timerBlink: 10,
     gameWidth: 300,
     bgMusic: MySounds.level1,
   },
-  2: {
-    startTime: 15,
+  {
+    key: 2,
+    roundName: 'Level 2',
+    startTime: 5,
     moleActiveTime: 1100,
     numMoles: 9,
     timerBlink: 10,
     gameWidth: 300,
     bgMusic: MySounds.level2,
   },
-  3: {
-    startTime: 15,
+  {
+    key: 3,
+    roundName: 'Level 3',
+    startTime: 5,
     moleActiveTime: 1000,
     numMoles: 12,
     timerBlink: 10,
     gameWidth: 300,
     bgMusic: MySounds.level3,
   },
-  4: {
-    startTime: 15,
+  {
+    key: 4,
+    roundName: 'Level 4',
+    startTime: 5,
     moleActiveTime: 900,
     numMoles: 15,
     timerBlink: 10,
     gameWidth: 300,
     bgMusic: MySounds.level4,
   },
-  5: {
-    startTime: 15,
+  {
+    key: 5,
+    roundName: 'Level 5',
+    startTime: 5,
     moleActiveTime: 800,
     numMoles: 16,
     timerBlink: 10,
     gameWidth: 400,
     bgMusic: MySounds.level5,
   },
-};
+  {
+    key: 6,
+    roundName: 'Level 6',
+    startTime: 5,
+    moleActiveTime: 700,
+    numMoles: 20,
+    timerBlink: 10,
+    gameWidth: 400,
+    bgMusic: MySounds.level6,
+  },
+  {
+    key: 7,
+    roundName: 'Level 7',
+    startTime: 5,
+    moleActiveTime: 600,
+    numMoles: 25,
+    timerBlink: 10,
+    gameWidth: 500,
+    bgMusic: MySounds.level7,
+  },
+  {
+    key: 8,
+    roundName: 'Level 8',
+    startTime: 5,
+    moleActiveTime: 500,
+    numMoles: 30,
+    timerBlink: 10,
+    gameWidth: 400,
+    bgMusic: MySounds.level8,
+  },
+  {
+    key: 9,
+    roundName: 'Level 9',
+    startTime: 5,
+    moleActiveTime: 400,
+    numMoles: 35,
+    timerBlink: 10,
+    gameWidth: 400,
+    bgMusic: MySounds.level5,
+  },
+  {
+    key: 10,
+    roundName: 'Level 10',
+    startTime: 5,
+    moleActiveTime: 300,
+    numMoles: 35,
+    timerBlink: 10,
+    gameWidth: 400,
+    bgMusic: MySounds.level8,
+  },
+];
 
 const App = () => {
-  const [settings, setSettings] = useState(MySettings);
   return (
     <GameBoard
-      settings={settings}
+      settings={MySettings}
       sounds={MySounds}
     />
   );

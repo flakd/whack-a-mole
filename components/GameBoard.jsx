@@ -19,10 +19,11 @@ import Moles from './Moles';
 //import styles from '../styles';
 
 const GameBoard = (props) => {
-  const roundSettings = props.settings[1];
+  const [roundNum, setRoundNum] = useState(1);
+  const [roundSettings, setRoundSettings] = useState(
+    props.settings[roundNum - 1]
+  );
   const startTime = roundSettings.startTime;
-  const roundNum = roundSettings.key;
-
   const [timeLeft, setTimeLeft] = useState(startTime);
   const [blinkCount, setBlinkCount] = useState(0);
   const [showTimeLeft, setShowTimeLeft] = useState(true);
@@ -31,6 +32,18 @@ const GameBoard = (props) => {
   const [isRoundOver, setIsRoundOver] = useState(false);
   const [isGamePaused, setIsGamePaused] = useState(false);
   const [isPauseModalVisible, setIsPauseModalVisible] = useState(false);
+
+  const nextRound = () => {
+    //setRoundNum((prevRoundNum) => prevRoundNum + 1);
+    setRoundNum(roundNum + 1);
+    if (props.settings.length === roundNum) {
+      setIsGameOver(true);
+    } else {
+      setRoundSettings(props.settings[roundNum - 1]);
+      setTimeLeft(startTime);
+      //..
+    }
+  };
 
   useEffect(() => {
     if (!isGamePaused) {
@@ -58,7 +71,7 @@ const GameBoard = (props) => {
     console.log('post score: ', score);
   };
 
-  const playSound = async (soundName) => {
+  const playSound = async (soundName, durationMillis) => {
     console.log('soundName: ', soundName);
     const soundObject = new Audio.Sound();
     try {
@@ -99,13 +112,14 @@ const GameBoard = (props) => {
         setTimeLeft={setTimeLeft}
         startTime={startTime}
         roundNum={roundNum}
+        setRoundNum={setRoundNum}
+        nextRound={nextRound}
       />
 
       <GameOverModal
         isGameOver={isGameOver}
         setIsGameOver={setIsGameOver}
-        setTimeLeft={setTimeLeft}
-        startTime={startTime}
+        setRoundNum={setRoundNum}
       />
 
       <ImageBackground

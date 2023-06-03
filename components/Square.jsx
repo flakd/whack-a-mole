@@ -29,7 +29,7 @@ const Square = (props) => {
       timerId = setInterval(() => {
         setMoleActive(true);
         console.log('about to play popOut sound');
-        //props.playSound('popOut');
+        //props.playSound('popOut',1000);
 
         setTimeout(() => {
           setMoleActive(false);
@@ -48,7 +48,7 @@ const Square = (props) => {
   const onPressMole = () => {
     console.log('moleActive: ', moleActive);
     if (moleActive) {
-      props.playSound('whack');
+      props.playSound('whack', 1000);
       props.addToScore();
       setMoleActive(false);
     }

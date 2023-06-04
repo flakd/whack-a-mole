@@ -11,7 +11,7 @@ const GameOverModal = (props) => {
       style={styles.modal}
     >
       <View style={styles.modal}>
-        <View style={styles.continueButtonBox}>
+        <View style={styles.modalButtonBox}>
           <Text style={styles.paused}>GAME</Text>
           <Text style={styles.paused}>OVER</Text>
           <TouchableOpacity
@@ -19,8 +19,6 @@ const GameOverModal = (props) => {
             onPress={() => {
               console.log('Game Over Pressed');
               props.setIsGameOver(false);
-              //props.setTimeLeft(props.startTime);
-              props.setRoundNum(1);
             }}
           >
             <Text style={styles.buttonText}>START</Text>

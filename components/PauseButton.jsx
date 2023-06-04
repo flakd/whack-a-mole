@@ -2,9 +2,8 @@ import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import styles from '../styles';
 
-const ButtonBox = (props) => {
+const PauseButton = (props) => {
   return (
-    //<View style={styles.buttonBox}>
     <TouchableOpacity
       style={[
         styles.button,
@@ -27,8 +26,7 @@ const ButtonBox = (props) => {
         PAUSE
       </Text>
     </TouchableOpacity>
-    //</View>
   );
 };
 
-export default ButtonBox;
+export default PauseButton;

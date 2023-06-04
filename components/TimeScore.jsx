@@ -1,10 +1,20 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {View, Text, Platform} from 'react-native';
 import styles from '../styles';
 
 const TimeScore = (props) => {
+  //const scoreText = useRef(null);
+
   return (
     <View style={styles.timeScore}>
+      <View
+        style={{
+          //backgroundColor: 'yellow',
+          alignItems: 'center',
+        }}
+      >
+        <Text style={styles.score}>Level: {props.roundNum}</Text>
+      </View>
       <View
         style={{
           //backgroundColor: 'yellow',
@@ -23,6 +33,7 @@ const TimeScore = (props) => {
         ]}
       >
         <Text
+          //      ref={scoreText}
           style={[
             styles.score,
             {display: props.showTimeLeft ? 'flex' : 'none'},

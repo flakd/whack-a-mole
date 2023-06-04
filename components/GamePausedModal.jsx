@@ -11,8 +11,7 @@ const GamePausedModal = (props) => {
       style={styles.modal}
     >
       <View style={styles.modal}>
-        <View style={styles.continueButtonBox}>
-          <Text style={styles.paused}>GAME</Text>
+        <View style={styles.modalButtonBox}>
           <Text style={styles.paused}>PAUSED</Text>
           <TouchableOpacity
             style={[styles.button, {backgroundColor: 'green'}]}
@@ -23,6 +22,16 @@ const GamePausedModal = (props) => {
             }}
           >
             <Text style={styles.buttonText}>CONTINUE</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, {backgroundColor: 'red'}]}
+            onPress={() => {
+              console.log('wtf');
+              props.setIsModalVisible(false);
+              props.setIsGameOver(true);
+            }}
+          >
+            <Text style={styles.buttonText}>QUIT GAME</Text>
           </TouchableOpacity>
         </View>
       </View>

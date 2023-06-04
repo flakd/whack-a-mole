@@ -5,22 +5,22 @@ import styles from '../styles';
 const RoundCompletedModal = (props) => {
   return (
     <Modal
-      id='gameOverModal'
+      id='roundOverModal'
       visible={props.isRoundOver}
       transparent={true}
       style={styles.modal}
     >
       <View style={styles.modal}>
-        <View style={styles.continueButtonBox}>
+        <View style={styles.modalButtonBox}>
           <Text style={styles.paused}>Round #{props.roundNum}</Text>
           <Text style={styles.paused}>Completed</Text>
           <TouchableOpacity
             style={[styles.button, {backgroundColor: 'green'}]}
             onPress={() => {
-              console.log('Game Over Pressed');
+              console.log('Round Over Pressed');
               props.setIsRoundOver(false);
               props.nextRound();
-              props.setTimeLeft(props.startTime);
+              //props.setTimeLeft(props.startTime);
             }}
           >
             <Text style={styles.buttonText}>

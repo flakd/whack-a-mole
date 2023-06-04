@@ -11,7 +11,7 @@ import {
 import {Audio} from 'expo-av';
 import Square from './Square';
 import TimeScore from './TimeScore';
-import ButtonBox from './ButtonBox';
+import PauseButton from './PauseButton';
 import GameOverModal from './GameOverModal';
 import GamePausedModal from './GamePausedModal';
 import RoundCompletedModal from './RoundCompletedModal';
@@ -39,11 +39,26 @@ const GameBoard = (props) => {
     if (props.settings.length === roundNum) {
       setIsGameOver(true);
     } else {
-      setRoundSettings(props.settings[roundNum - 1]);
+      //setRoundSettings(props.settings[roundNum - 1]);
+      setRoundSettings(props.settings[roundNum]);
       setTimeLeft(startTime);
+      playSound('level' + roundNum + 1, (startTime + 1) * 1000);
       //..
     }
   };
+  const endGame = () => {
+    setIsGameOver(true);
+  };
+
+  const startGame = () => {
+    setIsGameOver(false);
+    setScore(0);
+    setRoundNum(1);
+  };
+
+  useEffect(() => {
+    startGame();
+  }, [isGameOver]);
 
   useEffect(() => {
     if (!isGamePaused) {
@@ -55,7 +70,7 @@ const GameBoard = (props) => {
           }
           setBlinkCount((prevBlinkCount) => prevBlinkCount + 1);
         }, 200);
-        if (timeLeft < props.settings.timerBlink) {
+        if (timeLeft < roundSettings.timerBlink) {
           setShowTimeLeft((showTimeLeft) => !showTimeLeft);
         }
         return () => clearInterval(timerId);
@@ -88,7 +103,7 @@ const GameBoard = (props) => {
           setTimeout(() => {
             soundObject.unloadAsync();
             //}, playbackStatus.durationMillis);
-          }, 3000);
+          }, durationMillis);
         })
         .catch((error) => {
           console.log(error);
@@ -104,6 +119,7 @@ const GameBoard = (props) => {
         isModalVisible={isPauseModalVisible}
         setIsGamePaused={setIsGamePaused}
         setIsModalVisible={setIsPauseModalVisible}
+        setIsGameOver={setIsGameOver}
       />
 
       <RoundCompletedModal
@@ -128,20 +144,19 @@ const GameBoard = (props) => {
       >
         <Text style={styles.header}>Whack-a-mole</Text>
 
-        <ButtonBox
+        <PauseButton
           isGamePaused={isGamePaused}
           setIsGamePaused={setIsGamePaused}
           setIsModalVisible={setIsPauseModalVisible}
         />
-        {/* BUTTON BOX */}
 
         <TimeScore
+          roundNum={roundNum}
           timeLeft={timeLeft}
           score={score}
-          showTimeLeft={showTimeLeft}
+          showTimeLeft={timeLeft > 0 ? showTimeLeft : true}
         />
 
-        {/* MOLES */}
         <Moles
           settings={roundSettings}
           isRoundOver={isRoundOver}

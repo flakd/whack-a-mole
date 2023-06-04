@@ -39,11 +39,13 @@ const Moles = (props) => {
           key={index}
           id={index}
           //time={startTime}
+          isRoundOver={props.isRoundOver}
+          isGamePaused={props.isGamePaused}
           isGameOver={props.isGameOver}
-          setIsGameOver={props.setIsGameOver}
-          //isGamePaused={isGamePaused}
           addToScore={props.addToScore}
           playSound={props.playSound}
+          unloadSound={props.unloadSound}
+          stopSound={props.stopSound}
           settings={props.settings}
         ></Square>
       ))}

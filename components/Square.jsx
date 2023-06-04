@@ -23,13 +23,16 @@ const Square = (props) => {
       endRound();
       return;
     }
-    if (!props.isGamePaused && !props.isRoundOver) {
+    if (!props.isGamePaused && !props.isRoundOver && !props.isGameOver) {
       //this should in 60 secs from GameBoard.jsx
       //setTimeout(endGame, props.time * 1000);
       timerId = setInterval(() => {
         setMoleActive(true);
+        console.log('props.isGamePaused: ', props.isGamePaused);
+        console.log('props.isRoundOver: ', props.isRoundOver);
+        console.log('props.isGameOver: ', props.isGameOver);
         console.log('about to play popOut sound');
-        //props.playSound('popOut',1000);
+        //props.playSound('popOut', 1000);
 
         setTimeout(() => {
           setMoleActive(false);
@@ -38,11 +41,12 @@ const Square = (props) => {
     } else {
       return;
     }
-  }, [props.isGamePaused, props.isRoundOver]);
+  }, [props.isGamePaused]);
 
   const endRound = () => {
     clearInterval(timerId);
     setMoleActive(false);
+    props.unloadSound();
   };
 
   const onPressMole = () => {

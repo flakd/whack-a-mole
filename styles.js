@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     height: '100%',
     position: 'absolute',
   },
-  continueButtonBox: {
+  modalButtonBox: {
     width: 200,
     height: 150,
     backgroundColor: 'white',
@@ -103,9 +103,9 @@ const styles = StyleSheet.create({
   },
   hole: {
     flex: 1,
-    width: 80,
-    height: 80,
-    margin: 10,
+    width: 70,
+    height: 70,
+    margin: 5,
     alignItems: 'center',
     alignContent: 'center',
     justifyContent: 'center',
@@ -116,9 +116,9 @@ const styles = StyleSheet.create({
   },
   mole: {
     flex: 1,
-    width: 80,
-    height: 80,
-    margin: 10,
+    width: 70,
+    height: 70,
+    margin: 5,
     shadowRadius: 3,
     shadowColor: 'black',
     shadowOpacity: 0.5,

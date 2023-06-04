@@ -42,7 +42,7 @@ const GameBoard = (props) => {
       //setRoundSettings(props.settings[roundNum - 1]);
       setRoundSettings(props.settings[roundNum]);
       setTimeLeft(startTime);
-      playSound('level' + roundNum + 1, (startTime + 1) * 1000);
+      playSound('round' + roundNum + 1, (startTime + 1) * 1000);
       //..
     }
   };
